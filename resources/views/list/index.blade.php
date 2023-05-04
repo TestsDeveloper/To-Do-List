@@ -44,89 +44,48 @@
 
             <!-- this is add new btn and show your job to do list  -->
             <article class="mt-10">
-
-                <!-- this is list item start  -->
-                <div class="bg-white rounded-xl px-6 py-4 md:px-10 md:py-8 lg:px-16 lg:py-10 shadow-md mt-8 lg:mt-10">
+                @foreach ($showData as $list)
+                <div  class="bg-white rounded-xl px-6 py-4 md:px-10 md:py-8 lg:px-16 lg:py-10 shadow-md mt-8 lg:mt-10">
                     <!-- this is title  -->
-                    <h1 class="text-xl font-bold text-slate-600">Design your projects.</h1>
+                    <h1 class="text-xl font-bold text-slate-600">{{ $list->title }}</h1>
                     <p class="mt-2 md:mt-3 text-sm md:text-md text-slate-500">
-                        By the time a prospets arrvies at your sign up page in most cases , they've already evaluate.
+                        {{ $list->description }}
                     </p>
                     <div class="flex justify-between mt-10">
                         <!-- This is category -->
                         <div class="border rounded-xl px-2 p-1 md:p-2 text-sm shadow-md">
                             <i class="fa-solid fa-pen-nib text-slate-700"></i>
-                            Design
+                            {{ $list->category }}
                         </div>
                         <!--  -->
-
                         <!-- edit and delete section  -->
                         <div class="flex gap-x-3 items-center">
                             <button onclick="showEditModal()" class=" w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-slate-500 text-white shadow-md">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <a href="" class="w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-red-500 text-white shadow-md">
-                                <i class="fas fa-trash"></i>
-                            </a>
+
+                            <form action="{{ route('todoList#delete',$list->id) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit"  class="w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-red-500 text-white shadow-md">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
+                @endforeach
+                <!-- this is list item start  -->
+
                 <!-- this is list end  -->
 
                 <!-- this is list item start  -->
-                <div class="bg-white rounded-xl px-6 py-4 md:px-10 md:py-8 lg:px-16 lg:py-10 shadow-md mt-8 lg:mt-10">
-                    <!-- this is title  -->
-                    <h1 class="text-xl font-bold text-slate-600">Design your projects.</h1>
-                    <p class="mt-2 md:mt-3 text-sm md:text-md text-slate-500">
-                        By the time a prospets arrvies at your sign up page in most cases , they've already evaluate.
-                    </p>
-                    <div class="flex justify-between mt-10">
-                        <!-- This is category -->
-                        <div class="border rounded-xl px-2 p-1 md:p-2 text-sm shadow-md">
-                            <i class="fa-solid fa-pen-nib text-slate-700"></i>
-                            Design
-                        </div>
-                        <!--  -->
 
-                        <!-- edit and delete section  -->
-                        <div class="flex gap-x-3 items-center">
-                            <button onclick="showEditModal()" class=" w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-slate-500 text-white shadow-md">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <a href="" class="w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-red-500 text-white shadow-md">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
                 <!-- this is list end  -->
 
                 <!-- this is list item start  -->
-                <div class="bg-white rounded-xl px-6 py-4 md:px-10 md:py-8 lg:px-16 lg:py-10 shadow-md mt-8 lg:mt-10">
-                    <!-- this is title  -->
-                    <h1 class="text-xl font-bold text-slate-600">Design your projects.</h1>
-                    <p class="mt-2 md:mt-3 text-sm md:text-md text-slate-500">
-                        By the time a prospets arrvies at your sign up page in most cases , they've already evaluate.
-                    </p>
-                    <div class="flex justify-between mt-10">
-                        <!-- This is category -->
-                        <div class="border rounded-xl px-2 p-1 md:p-2 text-sm shadow-md">
-                            <i class="fa-solid fa-pen-nib text-slate-700"></i>
-                            Design
-                        </div>
-                        <!--  -->
 
-                        <!-- edit and delete section  -->
-                        <div class="flex gap-x-3 items-center">
-                            <button onclick="showEditModal()" class=" w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-slate-500 text-white shadow-md">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <a href="" class="w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-red-500 text-white shadow-md">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
                 <!-- this is list end  -->
 
 
@@ -185,18 +144,28 @@
                     </button>
                 </div>
                 <h1 class="text-3xl text-center text-slate-600">Edit List</h1>
-                <form class="mt-10" action="">
+                <form class="mt-10" action="{{ route('todo#edit',$list->id) }}" method="POST">
+                    @csrf
                     <div class="mt-8">
                         <label for="Category" class="text-slate-600 text-sm">Category</label><br>
-                        <input id="Category" type="text" class="px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Category...">
+                        <input id="Category" name="category" value="{{ old('category',$list->category) }}" type="text" class="px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Category...">
+                        @error('category')
+                        <small class=" text-red-500">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="mt-8">
                         <label for="title" class="text-slate-600 text-sm">Title</label><br>
-                        <input id="title" type="text" class="px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Title...">
+                        <input id="title" type="text" name="title" value="{{ old('title',$list->title) }}" class="px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Title...">
+                        @error('title')
+                        <small class=" text-red-500">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="mt-8">
                         <label for="description" class="text-slate-600 text-sm">Description</label><br>
-                        <textarea name="" class="px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Description..." id="description" cols="30" rows="5"></textarea>
+                        <textarea name="description" class="px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Description..." id="description" cols="30" rows="5">{{ old('description',$list->description) }}</textarea>
+                        @error('description')
+                        <small class=" text-red-500">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="flex justify-end mt-10">
                         <button type="submit" class="bg-blue-500 text-white px-4 text-sm md:text-md py-2 md:px-6 md:py-3 shadow-xl rounded-2xl">
@@ -232,7 +201,8 @@
     <!--  -->
 
     <!-- for edit success -->
-    {{-- <div  class="alertEditDisplay duration-500 fixed top-60 left-0 w-full flex justify-center ">
+    @if (session('updateSuccess'))
+    <div  class="alertEditDisplay duration-500 fixed top-60 left-0 w-full flex justify-center ">
         <div class="text-center px-8 py-5 text-lg md:px-10 md:py-5 text-green-600 md:text-2xl bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-green-500/50">
             <div class="flex justify-end relative">
                 <button  class="closeEditAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
@@ -243,14 +213,16 @@
                 <div class="w-10 h-10 md:w-16 md:h-16 rounded-full shadow-xl border border-green-500 flex justify-center items-center">
                     <i class="fas fa-check text-2xl"></i>
                 </div>
-                <span>Edit Successfully...</span>
+                <span>{{ session('updateSuccess') }}</span>
             </div>
         </div>
-    </div> --}}
+    </div>
+    @endif
     <!--  -->
 
     <!-- for delete success -->
-    {{-- <div  class="alertDeleteDisplay duration-500 fixed top-96 left-0 w-full flex justify-center ">
+    @if (session('deleteSuccess'))
+    <div  class="alertDeleteDisplay duration-500 fixed top-20 left-0 w-full flex justify-center ">
         <div class="text-center px-8 py-5 text-lg md:px-10 md:py-5 text-red-600 md:text-2xl bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-red-500/50">
             <div class="flex justify-end relative">
                 <button  class="closeDeleteAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
@@ -261,10 +233,12 @@
                 <div class="w-10 h-10 md:w-16 md:h-16 rounded-full shadow-xl border border-red-500 flex justify-center items-center">
                     <i class="fas fa-check text-2xl"></i>
                 </div>
-                <span>Delete Successfully...</span>
+                <span>{{ session('deleteSuccess') }}</span>
             </div>
         </div>
-    </div> --}}
+    </div>
+    @endif
+
     <!--  -->
 
 </body>
