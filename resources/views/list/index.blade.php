@@ -148,18 +148,19 @@
                     </button>
                 </div>
                 <h1 class="text-3xl text-center text-slate-600">Create New Lists</h1>
-                <form class="mt-10" action="">
+                <form class="mt-10" action="{{route('todoList#create')}}" method="POST">
+                    @csrf
                     <div class="">
                         <label for="category" class="text-slate-600 text-sm">Category</label><br>
-                        <input id="category" type="text" class="px-3 py-1 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Category...">
+                        <input id="category" type="text" name="category" class="px-3 py-1 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Category...">
                     </div>
                     <div class="mt-8">
                         <label for="title" class="text-slate-600 text-sm">Title</label><br>
-                        <input id="title" type="text" class="px-3 py-1 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Title...">
+                        <input id="title" type="text" name="title" class="px-3 py-1 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Title...">
                     </div>
                     <div class="mt-8">
                         <label for="description" class="text-slate-600 text-sm">Description</label><br>
-                        <textarea name="" class="px-3 py-1 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Description..." id="description" cols="30" rows="5"></textarea>
+                        <textarea name="description" class="px-3 py-1 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Description..." id="description" cols="30" rows="5"></textarea>
                     </div>
                     <div class="flex justify-end mt-10">
                         <button type="submit" class="bg-blue-500 text-white px-4 text-sm md:text-md py-2 md:px-6 md:py-3 shadow-xl rounded-2xl">
@@ -211,25 +212,27 @@
     <!--  -->
 
     <!-- for create success -->
-    <div  class="alertSuccessDisplay duration-500 fixed top-20 left-0 w-full flex justify-center ">
-        <div class="text-center px-8 py-5 text-lg md:px-10 md:py-5 text-green-600 md:text-2xl bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-green-500/50">
-            <div class="flex justify-end relative">
-                <button  class="closeSuccessAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
-                    <i class="fas fa-xmark"></i>
-                </button>
-            </div>
-            <div class="flex items-center gap-x-4 mt-5">
-                <div class="w-10 h-10 md:w-16 md:h-16 rounded-full shadow-xl border border-green-500 flex justify-center items-center">
-                    <i class="fas fa-check text-2xl"></i>
+    @if (session("alertSuccessDisplay"))
+        <div  class="alertSuccessDisplay duration-500 fixed top-20 left-0 w-full flex justify-center ">
+            <div class="text-center px-8 py-5 text-lg md:px-10 md:py-5 text-green-600 md:text-2xl bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-green-500/50">
+                <div class="flex justify-end relative">
+                    <button  class="closeSuccessAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
+                        <i class="fas fa-xmark"></i>
+                    </button>
                 </div>
-                <span>Create Successfully...</span>
+                <div class="flex items-center gap-x-4 mt-5">
+                    <div class="w-10 h-10 md:w-16 md:h-16 rounded-full shadow-xl border border-green-500 flex justify-center items-center">
+                        <i class="fas fa-check text-2xl"></i>
+                    </div>
+                    <span>{{session("alertSuccessDisplay")}}</span>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
     <!--  -->
 
     <!-- for edit success -->
-    <div  class="alertEditDisplay duration-500 fixed top-60 left-0 w-full flex justify-center ">
+    {{-- <div  class="alertEditDisplay duration-500 fixed top-60 left-0 w-full flex justify-center ">
         <div class="text-center px-8 py-5 text-lg md:px-10 md:py-5 text-green-600 md:text-2xl bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-green-500/50">
             <div class="flex justify-end relative">
                 <button  class="closeEditAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
@@ -243,11 +246,11 @@
                 <span>Edit Successfully...</span>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!--  -->
 
     <!-- for delete success -->
-    <div  class="alertDeleteDisplay duration-500 fixed top-96 left-0 w-full flex justify-center ">
+    {{-- <div  class="alertDeleteDisplay duration-500 fixed top-96 left-0 w-full flex justify-center ">
         <div class="text-center px-8 py-5 text-lg md:px-10 md:py-5 text-red-600 md:text-2xl bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-red-500/50">
             <div class="flex justify-end relative">
                 <button  class="closeDeleteAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
@@ -261,7 +264,7 @@
                 <span>Delete Successfully...</span>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!--  -->
 
 </body>
