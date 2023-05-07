@@ -152,7 +152,7 @@
             </div>
             <h1 class="text-3xl text-center text-slate-600">Edit List</h1>
 
-            <form class="mt-10" action="{{ route('todo#edit',$list->id) }}" method="POST">
+            <form class="mt-10" action="{{ route('todo#edit') }}" method="POST">
                 @csrf
                 <div class="mt-8">
                     <label for="Category" class="text-slate-600 text-sm">Category</label><br>
@@ -263,7 +263,7 @@
             url:'todoList/editPage',
             dataType:'json',
             success:function(response){
-
+                console.log(response.editData);
                 $categoryInput =$('.category').val(`${response.editData.category}`);
                 $titleInput =$('.title').val(`${response.editData.title}`);
                 $description =$('.description').val(`${response.editData.description}`);
@@ -275,6 +275,8 @@
 
 
         })
+
+       
       })
     })
 

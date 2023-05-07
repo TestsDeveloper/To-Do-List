@@ -31,8 +31,12 @@ class TodoListController extends Controller
         return redirect()->route('todoList#home')->with(['deleteSuccess'=>'Delete Successfully...']);
     }
 
+    //edit page show
     public function editPage(TodoList $todoList,Request $request){
         $showEditData =$todoList->where('id',$request->id)->first();
+
+        // this is session put  in id
+        $request->session()->put('id',$showEditData->id);
 
 
         return response()->json([
@@ -42,14 +46,17 @@ class TodoListController extends Controller
     }
 
 
+    //edit
+    public function editTodoList(Request $request,TodoList $todoList){
+        //this is session get in id
+        $value =$request->session()->get('id');
 
-    public function editTodoList(Request $request,TodoList $todoList,$id){
-        $getData =$this->getPostData($request);
+         $getData =$this->getPostData($request);
 
-        $todoList->where('id',$id)->update($getData);
+         $todoList->where('id',$value)->update($getData);
 
 
-        return back()->with(['updateSuccess'=> 'Update Successfully....']);
+         return back()->with(['updateSuccess'=> 'Update Successfully....']);
     }
 
 
