@@ -31,14 +31,27 @@ class TodoListController extends Controller
         return redirect()->route('todoList#home')->with(['deleteSuccess'=>'Delete Successfully...']);
     }
 
-    public function editTodoList(todoListRequest $request,TodoList $todoList,$id){
+    public function editPage(TodoList $todoList,Request $request){
+        $showEditData =$todoList->where('id',$request->id)->first();
+
+
+        return response()->json([
+            'message' => 'success',
+            'editData' => $showEditData
+        ]);
+    }
+
+
+
+    public function editTodoList(Request $request,TodoList $todoList,$id){
         $getData =$this->getPostData($request);
 
         $todoList->where('id',$id)->update($getData);
 
-        
+
         return back()->with(['updateSuccess'=> 'Update Successfully....']);
     }
+
 
 
     // get post data

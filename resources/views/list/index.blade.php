@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Tailwind css cdn  -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <title>To do List</title>
 </head>
 
@@ -45,9 +47,12 @@
             <!-- this is add new btn and show your job to do list  -->
             <article class="mt-10">
                 @foreach ($showData as $list)
-                <div  class="bg-white rounded-xl px-6 py-4 md:px-10 md:py-8 lg:px-16 lg:py-10 shadow-md mt-8 lg:mt-10">
+
+                <div  class="parent bg-white rounded-xl px-6 py-4 md:px-10 md:py-8 lg:px-16 lg:py-10 shadow-md mt-8 lg:mt-10">
+                    <input type="hidden" id='editId' value="{{ $list->id }}">
                     <!-- this is title  -->
                     <h1 class="text-xl font-bold text-slate-600">{{ $list->title }}</h1>
+
                     <p class="mt-2 md:mt-3 text-sm md:text-md text-slate-500">
                         {{ $list->description }}
                     </p>
@@ -60,7 +65,8 @@
                         <!--  -->
                         <!-- edit and delete section  -->
                         <div class="flex gap-x-3 items-center">
-                            <button onclick="showEditModal()" class=" w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-slate-500 text-white shadow-md">
+                            {{-- this is edit section --}}
+                            <button onclick="showEditModal()" class="editBtn w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-slate-500 text-white shadow-md">
                                 <i class="fas fa-edit"></i>
                             </button>
 
@@ -136,48 +142,50 @@
 
     <!-- this is for modal edit section  -->
     <div id="modalEdit" class="opacity-0 pointer-events-none duration-500" >
-        <section class="fixed  top-0 w-full h-full  flex justify-center items-center bg-black/20">
-            <article id="modalEditDisplay" class="rounded-2xl px-8 py-6 md:px-14 md:py-10 lg:px-20 lg:py-16 shadow-2xl bg-slate-50 w-[900px] duration-500 translate-y-[-120%]">
-                <div class="flex justify-end">
-                    <button  class="closeEditModalBtn w-8 md:w-10 h-8 md:h-10 flex justify-center items-center shadow-xl text-white bg-red-500 rounded-full">
-                        <i class="fas fa-xmark"></i>
+
+    <section class="fixed  top-0 w-full h-full  flex justify-center items-center bg-black/20">
+        <article id="modalEditDisplay" class="rounded-2xl px-8 py-6 md:px-14 md:py-10 lg:px-20 lg:py-16 shadow-2xl bg-slate-50 w-[900px] duration-500 translate-y-[-120%]">
+            <div class="flex justify-end">
+                <button  class="closeEditModalBtn w-8 md:w-10 h-8 md:h-10 flex justify-center items-center shadow-xl text-white bg-red-500 rounded-full">
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </div>
+            <h1 class="text-3xl text-center text-slate-600">Edit List</h1>
+
+            <form class="mt-10" action="{{ route('todo#edit',$list->id) }}" method="POST">
+                @csrf
+                <div class="mt-8">
+                    <label for="Category" class="text-slate-600 text-sm">Category</label><br>
+                    <input id="category" name="category" value="{{ old('category') }}" type="text" class="category px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Category...">
+                    @error('category')
+                    <small class=" text-red-500">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="mt-8">
+                    <label for="title" class="text-slate-600 text-sm">Title</label><br>
+                    <input id="title" type="text" name="title"  class="title px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Title...">
+                    @error('title')
+                    <small class=" text-red-500">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="mt-8">
+                    <label for="description" class="text-slate-600 text-sm">Description</label><br>
+                    <textarea name="description" id="description" class="px-3 py-1 text-slate-600 description text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Description..." id="description" cols="30" rows="5">{{ old('description') }}</textarea>
+                    @error('description')
+                    <small class=" text-red-500">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="flex justify-end mt-10">
+                    <button type="submit" class="bg-blue-500 text-white px-4 text-sm md:text-md py-2 md:px-6 md:py-3 shadow-xl rounded-2xl">
+                        <i class="fas fa-plus"></i>
+                        Update
                     </button>
                 </div>
-                <h1 class="text-3xl text-center text-slate-600">Edit List</h1>
-                <form class="mt-10" action="{{ route('todo#edit',$list->id) }}" method="POST">
-                    @csrf
-                    <div class="mt-8">
-                        <label for="Category" class="text-slate-600 text-sm">Category</label><br>
-                        <input id="Category" name="category" value="{{ old('category',$list->category) }}" type="text" class="px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Category...">
-                        @error('category')
-                        <small class=" text-red-500">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    <div class="mt-8">
-                        <label for="title" class="text-slate-600 text-sm">Title</label><br>
-                        <input id="title" type="text" name="title" value="{{ old('title',$list->title) }}" class="px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Title...">
-                        @error('title')
-                        <small class=" text-red-500">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    <div class="mt-8">
-                        <label for="description" class="text-slate-600 text-sm">Description</label><br>
-                        <textarea name="description" class="px-3 py-1 text-slate-600 text-md md:px-5 md:py-2 rounded-xl shadow-md md:text-lg w-full focus:outline-0 focus:ring-1 focus:ring-blue-300" placeholder="Enter Description..." id="description" cols="30" rows="5">{{ old('description',$list->description) }}</textarea>
-                        @error('description')
-                        <small class=" text-red-500">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    <div class="flex justify-end mt-10">
-                        <button type="submit" class="bg-blue-500 text-white px-4 text-sm md:text-md py-2 md:px-6 md:py-3 shadow-xl rounded-2xl">
-                            <i class="fas fa-plus"></i>
-                            Update
-                        </button>
-                    </div>
-                </form>
-            </article>
-        </section>
-        <!--  -->
-    </div>
+            </form>
+        </article>
+    </section>
+
+</div>
     <!--  -->
 
     <!-- for create success -->
@@ -244,6 +252,32 @@
 </body>
 <script>
 
+    $(document).ready(function(){
+      $('.editBtn').on('click',function(){
+       $parentNode = $(this).parents('.parent');
+        $editId =$parentNode.find('#editId').val();
+
+        $.ajax({
+            type:'get',
+            data:{'id': $editId},
+            url:'todoList/editPage',
+            dataType:'json',
+            success:function(response){
+
+                $categoryInput =$('.category').val(`${response.editData.category}`);
+                $titleInput =$('.title').val(`${response.editData.title}`);
+                $description =$('.description').val(`${response.editData.description}`);
+
+
+
+
+            }
+
+
+        })
+      })
+    })
+
     // btn decelaration
     let addBtn = document.getElementById('addBtn')
     let showEditModalBtn = document.querySelector('.showEditModalBtn')
@@ -277,6 +311,7 @@
         modalEditDisplay.style.transform ="translateY(0)"
         modalEdit.style.opacity ='1'
         modalEdit.style.pointerEvents ="auto"
+
     }
 
     //click close btn to close create modal section
@@ -314,6 +349,9 @@
         alertName.style.opacity = '0'
         alertName.style.pointerEvents ="none"
     }
+
+
+
 
 </script>
 </html>
