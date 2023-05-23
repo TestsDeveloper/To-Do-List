@@ -39,7 +39,7 @@
                     </p>
                 </section>
                 <section>
-                    <button id="addBtn" class="bg-blue-500 z-20 text-white text-sm md:text-md px-3 py-2 md:px-5 md:py-3 rounded-xl shadow-md mt-5 md:mt-0">Add New Tasks...</button>
+                    <button type="button" onclick="show('modalCreate','modalCreateDisplay')"  class="addBtn bg-blue-500 z-20 text-white text-sm md:text-md px-3 py-2 md:px-5 md:py-3 rounded-xl shadow-md mt-5 md:mt-0">Add New Tasks...</button>
                 </section>
             </article>
             <!--  -->
@@ -66,7 +66,7 @@
                         <!-- edit and delete section  -->
                         <div class="flex gap-x-3 items-center">
                             {{-- this is edit section --}}
-                            <button onclick="showEditModal()" class="editBtn w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-slate-500 text-white shadow-md">
+                            <button  class="editBtn w-6 h-6 text-sm md:text-md md:w-8 md:h-8 flex justify-center items-center rounded-md bg-slate-500 text-white shadow-md">
                                 <i class="fas fa-edit"></i>
                             </button>
 
@@ -108,7 +108,7 @@
         <section class="fixed  top-0 w-full h-full  flex justify-center items-center bg-black/20">
             <article id="modalCreateDisplay" class="rounded-2xl px-8 py-6 md:px-14 md:py-10 lg:px-20 lg:py-16 shadow-2xl bg-slate-50 w-[900px] duration-500 translate-y-[-120%]">
                 <div class="flex justify-end">
-                    <button  class="closeCreateModalBtn w-8 md:w-10 h-8 md:h-10 flex justify-center items-center shadow-xl text-white bg-red-500 rounded-full">
+                    <button onclick="hide('modalCreate','modalCreateDisplay')" class="closeCreateModalBtn w-8 md:w-10 h-8 md:h-10 flex justify-center items-center shadow-xl text-white bg-red-500 rounded-full">
                         <i class="fas fa-xmark"></i>
                     </button>
                 </div>
@@ -146,7 +146,7 @@
     <section class="fixed  top-0 w-full h-full  flex justify-center items-center bg-black/20">
         <article id="modalEditDisplay" class="rounded-2xl px-8 py-6 md:px-14 md:py-10 lg:px-20 lg:py-16 shadow-2xl bg-slate-50 w-[900px] duration-500 translate-y-[-120%]">
             <div class="flex justify-end">
-                <button  class="closeEditModalBtn w-8 md:w-10 h-8 md:h-10 flex justify-center items-center shadow-xl text-white bg-red-500 rounded-full">
+                <button onclick="hide('modalEdit','modalEditDisplay')" class="closeEditModalBtn w-8 md:w-10 h-8 md:h-10 flex justify-center items-center shadow-xl text-white bg-red-500 rounded-full">
                     <i class="fas fa-xmark"></i>
                 </button>
             </div>
@@ -190,10 +190,10 @@
 
     <!-- for create success -->
     @if (session("alertSuccessDisplay"))
-        <div  class="alertSuccessDisplay duration-500 fixed top-20 left-0 w-full flex justify-center ">
+        <div id="alertSuccessDisplay" class=" duration-500 fixed top-20 left-0 w-full flex justify-center ">
             <div class="text-center px-8 py-5 text-lg md:px-10 md:py-5 text-green-600 md:text-2xl bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-green-500/50">
                 <div class="flex justify-end relative">
-                    <button  class="closeSuccessAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
+                    <button onclick="hideAlert('alertSuccessDisplay')" class="closeSuccessAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
                         <i class="fas fa-xmark"></i>
                     </button>
                 </div>
@@ -210,10 +210,10 @@
 
     <!-- for edit success -->
     @if (session('updateSuccess'))
-    <div  class="alertEditDisplay duration-500 fixed top-60 left-0 w-full flex justify-center ">
+    <div id="alertEditDisplay" class=" duration-500 fixed top-60 left-0 w-full flex justify-center ">
         <div class="text-center px-8 py-5 text-lg md:px-10 md:py-5 text-green-600 md:text-2xl bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-green-500/50">
             <div class="flex justify-end relative">
-                <button  class="closeEditAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
+                <button onclick="hideAlert('alertEditDisplay')" class="closeEditAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
                     <i class="fas fa-xmark"></i>
                 </button>
             </div>
@@ -230,10 +230,10 @@
 
     <!-- for delete success -->
     @if (session('deleteSuccess'))
-    <div  class="alertDeleteDisplay duration-500 fixed top-20 left-0 w-full flex justify-center ">
+    <div id="alertDeleteDisplay" class=" duration-500 fixed top-20 left-0 w-full flex justify-center ">
         <div class="text-center px-8 py-5 text-lg md:px-10 md:py-5 text-red-600 md:text-2xl bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-red-500/50">
             <div class="flex justify-end relative">
-                <button  class="closeDeleteAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
+                <button onclick="hideAlert('alertDeleteDisplay')" class="closeDeleteAlert w-6 h-6 md:w-8 md:h-8 absolute top-0 right-[-10px] lg:top-[-10px] lg:right-[-30px] flex justify-center items-center border bg-red-400 text-white shadow-xl  rounded-full text-sm">
                     <i class="fas fa-xmark"></i>
                 </button>
             </div>
@@ -257,6 +257,11 @@
        $parentNode = $(this).parents('.parent');
         $editId =$parentNode.find('#editId').val();
 
+        document.getElementById('modalEdit').classList.remove('opacity-0','pointer-events-none')
+         document.getElementById('modalEdit').classList.add('opacity-100','pointer-events-auto')
+         document.getElementById('modalEditDisplay').classList.remove('translate-y-[-120%]')
+         document.getElementById('modalEditDisplay').classList.add('translate-y-0')
+
         $.ajax({
             type:'get',
             data:{'id': $editId},
@@ -267,93 +272,29 @@
                 $categoryInput =$('.category').val(`${response.editData.category}`);
                 $titleInput =$('.title').val(`${response.editData.title}`);
                 $description =$('.description').val(`${response.editData.description}`);
-
-
-
-
             }
-
-
         })
-
-       
       })
     })
 
-    // btn decelaration
-    let addBtn = document.getElementById('addBtn')
-    let showEditModalBtn = document.querySelector('.showEditModalBtn')
+</script>
+<script>
+     function show(modal,modalDisplay){
+        document.getElementById(modal).classList.remove('opacity-0','pointer-events-none')
+         document.getElementById(modal).classList.add('opacity-100','pointer-events-auto')
+         document.getElementById(modalDisplay).classList.remove('translate-y-[-120%]')
+         document.getElementById(modalDisplay).classList.add('translate-y-0')
+     }
+     function hide(modal,modalDisplay){
+        document.getElementById(modal).classList.remove('opacity-100','pointer-events-auto')
+        document.getElementById(modal).classList.add('opacity-0','pointer-events-none')
+        document.getElementById(modalDisplay).classList.remove('translate-y-0')
+         document.getElementById(modalDisplay).classList.add('translate-y-[-120%]')
+     }
 
-    let modalCreate = document.getElementById('modalCreate')
-    let modalEdit = document.getElementById('modalEdit')
-
-    let modalCreateDisplay = document.getElementById('modalCreateDisplay')
-    let modalEditDisplay = document.getElementById('modalEditDisplay')
-
-    let closeCreateModalBtn = document.querySelector('.closeCreateModalBtn')
-    let closeEditModalBtn = document.querySelector('.closeEditModalBtn')
-
-    let closeSuccessAlert = document.querySelector('.closeSuccessAlert')
-    let closeEditAlert = document.querySelector('.closeEditAlert')
-    let closeDeleteAlert = document.querySelector('.closeDeleteAlert')
-
-    let alertSuccessDisplay = document.querySelector('.alertSuccessDisplay')
-    let alertEditDisplay = document.querySelector('.alertEditDisplay')
-    let alertDeleteDisplay = document.querySelector('.alertDeleteDisplay')
-
-    //click addBtn to show modalCreate section
-    addBtn.addEventListener('click' ,()=>{
-        modalCreateDisplay.style.transform ="translateY(0)"
-        modalCreate.style.opacity ='1'
-        modalCreate.style.pointerEvents ="auto"
-    })
-
-    //show edit modal function
-    function showEditModal(){
-        modalEditDisplay.style.transform ="translateY(0)"
-        modalEdit.style.opacity ='1'
-        modalEdit.style.pointerEvents ="auto"
-
-    }
-
-    //click close btn to close create modal section
-    closeCreateModalBtn.addEventListener('click' ,()=>{
-        modalCreateDisplay.style.transform ="translateY(-120%)"
-        modalCreate.style.opacity ='0'
-        modalCreate.style.pointerEvents ="none"
-    })
-
-     //click close btn to close edit modal section
-     closeEditModalBtn.addEventListener('click' ,()=>{
-        modalEditDisplay.style.transform ="translateY(-120%)"
-        modalEdit.style.opacity ='0'
-        modalEdit.style.pointerEvents ="none"
-    })
-
-    //click closeAlert btn to close SuccessAlertDisplay
-    closeSuccessAlert.addEventListener('click' ,()=>{
-        hideAlert(alertSuccessDisplay)
-    })
-
-    //click closeAlertBtn to close EditAlertDisplay
-    closeEditAlert.addEventListener('click' ,()=>{
-        hideAlert(alertEditDisplay)
-    })
-
-    //click closeAlertBtn to close DeleteAlertDisplay
-    closeDeleteAlert.addEventListener('click' ,()=>{
-        hideAlert(alertDeleteDisplay)
-    })
-
-    //hide alert function
-    function hideAlert(alertName){
-        alertName.style.transform ="translateY(-120%)"
-        alertName.style.opacity = '0'
-        alertName.style.pointerEvents ="none"
-    }
-
-
-
-
+     function hideAlert(modalDisplay){
+        document.getElementById(modalDisplay).classList.remove('opacity-100')
+         document.getElementById(modalDisplay).classList.add('translate-y-[-120%]','opacity-0','pointer-events-none')
+     }
 </script>
 </html>
